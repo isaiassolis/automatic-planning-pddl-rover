@@ -66,11 +66,10 @@ automatic-planning-pddl-rover/
 ├── screenshots/
 │   ├── scenario1.png
 │   ├── scenario2.png
-│   ├── scenario3.png
-│   └── planner_execution.png
-│
+│   └── scenario3.png
+│   
 └── docs/
-    └── planner-comparison.md
+    └── 
 ```
 
 ---
