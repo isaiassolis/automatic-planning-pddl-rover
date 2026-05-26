@@ -11,7 +11,28 @@ The project includes the execution of IPC 2018 planners and the development of a
 
 The goal is to provide a practical, educational, and reproducible example of symbolic AI planning.
 
+
 ---
+
+## Interactive Rover Visualizer
+
+The repository also includes a web-based interactive visualizer capable of executing rover planning scenarios step-by-step.
+
+### Visualizer Features
+
+- Multiple planning scenarios
+- Interactive scenario selection
+- Step-by-step execution
+- Automatic playback mode
+- Rover state tracking
+- Mineral pickup and delivery simulation
+- Dynamic SVG graph rendering
+- Laboratory compatibility visualization
+
+### Visualizer Preview
+
+![Visualizer](screenshots/visualizer.png)
+
 
 ## Project Overview
 
@@ -68,8 +89,20 @@ automatic-planning-pddl-rover/
 │   ├── scenario2.png
 │   └── scenario3.png
 │   
-└── docs/
-    └── 
+├── visualizer/
+│   ├── index.html
+│   ├── style.css
+│   ├── app.js
+│   │
+│   └── data/
+│       ├── scenario1.json
+│       ├── scenario2.json
+│       ├── scenario3.json
+│       ├── problem1_plan.txt
+│       ├── problem2_plan.txt
+│       └── problem3_plan.txt
+ 
+
 ```
 
 ---
@@ -198,6 +231,32 @@ This scenario introduces:
 * mineral-laboratory compatibility,
 * additional locations,
 * more complex delivery constraints.
+
+---
+
+## Web-Based Planning Visualization
+
+A lightweight frontend visualizer was developed using:
+
+- HTML
+- CSS
+- JavaScript
+- SVG rendering
+
+The visualizer dynamically loads planning scenarios and generated plans, allowing interactive exploration of automated planning behavior.
+
+Users can:
+- execute plans manually,
+- autoplay planning sequences,
+- inspect rover states,
+- track delivered minerals,
+- and compare progressively complex planning environments.
+
+---
+
+## Live Demo
+
+https://darksite79.github.io/automatic-planning-pddl-rover/visualizer/
 
 ---
 
