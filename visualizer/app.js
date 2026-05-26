@@ -12,6 +12,15 @@ const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
 const resetBtn = document.getElementById("reset-btn");
 const playBtn = document.getElementById("play-btn");
+
+const problemFileInput = document.getElementById("problem-file");
+const planFileInput = document.getElementById("plan-file");
+const loadFilesBtn = document.getElementById("load-files-btn");
+
+const builtInPanel = document.getElementById("built-in-panel");
+const customPanel = document.getElementById("custom-panel");
+const modeInputs = document.querySelectorAll('input[name="mode"]');
+
 let autoplayInterval = null;
 
 let scenario = null;
@@ -380,10 +389,173 @@ function stopAutoplay() {
 }
 
 
+function readUploadedFile(file) {
+  return new Promise((resolve, reject) => {
+    if (!file) {
+      reject(new Error("No file selected."));
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = event => {
+      resolve(event.target.result);
+    };
+
+    reader.onerror = () => {
+      reject(new Error("Error reading file."));
+    };
+
+    reader.readAsText(file);
+  });
+}
+
+async function loadCustomPddlFiles() {
+  try {
+    stopAutoplay();
+
+    const problemText = await readUploadedFile(problemFileInput.files[0]);
+    const planText = await readUploadedFile(planFileInput.files[0]);
+
+    scenario = parsePddlProblem(problemText);
+    plan = parsePlan(planText);
+
+    currentStep = 0;
+
+    initialState = {
+      roverLocation: scenario.roverStart,
+      carrying: null,
+      rocks: { ...scenario.rocks },
+      delivered: []
+    };
+
+    state = cloneState(initialState);
+
+    scenarioTitle.textContent = scenario.name;
+    renderPlan();
+    updateView();
+  } catch (error) {
+    alert("Could not load files. Please check that both problem.pddl and sas_plan were selected.");
+    console.error(error);
+  }
+}
+
+function parsePddlProblem(problemText) {
+  const cleanText = problemText
+    .replace(/;.*$/gm, "")
+    .replace(/\s+/g, " ")
+    .toLowerCase();
+
+  const scenarioFromPddl = {
+    name: "Custom PDDL Problem",
+    locations: {},
+    edges: [],
+    roverStart: null,
+    rocks: {},
+    labs: {}
+  };
+
+  const connectedMatches = [...cleanText.matchAll(/\(connected\s+([a-z0-9_-]+)\s+([a-z0-9_-]+)\)/g)];
+  connectedMatches.forEach(match => {
+    const from = match[1];
+    const to = match[2];
+
+    scenarioFromPddl.edges.push([from, to]);
+    scenarioFromPddl.locations[from] = { label: from.toUpperCase() };
+    scenarioFromPddl.locations[to] = { label: to.toUpperCase() };
+  });
+
+  const atMatch = cleanText.match(/\(at\s+([a-z0-9_-]+)\s+([a-z0-9_-]+)\)/);
+  if (atMatch) {
+    scenarioFromPddl.roverStart = atMatch[2];
+    scenarioFromPddl.locations[atMatch[2]] = { label: atMatch[2].toUpperCase() };
+  }
+
+  const rockMatches = [...cleanText.matchAll(/\(rock-at\s+([a-z0-9_-]+)\s+([a-z0-9_-]+)\)/g)];
+  rockMatches.forEach(match => {
+    const rock = match[1];
+    const location = match[2];
+
+    scenarioFromPddl.rocks[rock] = location;
+    scenarioFromPddl.locations[location] = { label: location.toUpperCase() };
+  });
+
+  const labMatches = [...cleanText.matchAll(/\(lab\s+([a-z0-9_-]+)\)/g)];
+  labMatches.forEach(match => {
+    const lab = match[1];
+
+    if (!scenarioFromPddl.labs[lab]) {
+      scenarioFromPddl.labs[lab] = [];
+    }
+
+    scenarioFromPddl.locations[lab] = { label: lab.toUpperCase() };
+  });
+
+  const acceptsMatches = [...cleanText.matchAll(/\(accepts\s+([a-z0-9_-]+)\s+([a-z0-9_-]+)\)/g)];
+  acceptsMatches.forEach(match => {
+    const lab = match[1];
+    const rock = match[2];
+
+    if (!scenarioFromPddl.labs[lab]) {
+      scenarioFromPddl.labs[lab] = [];
+    }
+
+    scenarioFromPddl.labs[lab].push(rock);
+    scenarioFromPddl.locations[lab] = { label: lab.toUpperCase() };
+  });
+
+  if (!scenarioFromPddl.roverStart) {
+    throw new Error("Could not detect rover start location. Expected predicate: (at rover1 l4)");
+  }
+
+  assignAutoLayout(scenarioFromPddl);
+
+  return scenarioFromPddl;
+}
+
+function assignAutoLayout(scenarioData) {
+  const locationIds = Object.keys(scenarioData.locations);
+
+  const centerX = 280;
+  const centerY = 300;
+
+  const radiusX = 190;
+  const radiusY = 210;
+
+  locationIds.forEach((id, index) => {
+    const angle = (2 * Math.PI * index) / locationIds.length - Math.PI / 2;
+
+    scenarioData.locations[id].x = centerX + radiusX * Math.cos(angle);
+    scenarioData.locations[id].y = centerY + radiusY * Math.sin(angle);
+  });
+}
+
+modeInputs.forEach(input => {
+  input.addEventListener("change", event => {
+    const mode = event.target.value;
+
+    if (mode === "built-in") {
+      builtInPanel.classList.remove("hidden");
+      customPanel.classList.add("hidden");
+      loadProject(scenarioSelect.value);
+    }
+
+    if (mode === "custom") {
+      builtInPanel.classList.add("hidden");
+      customPanel.classList.remove("hidden");
+      resetExecution();
+      scenarioTitle.textContent = "Custom PDDL Problem";
+    }
+  });
+});
+
+
 prevBtn.addEventListener("click", previousStep);
 nextBtn.addEventListener("click", nextStep);
 playBtn.addEventListener("click", toggleAutoplay);
 resetBtn.addEventListener("click", resetExecution);
+loadFilesBtn.addEventListener("click", loadCustomPddlFiles);
+
 
 scenarioSelect.addEventListener("change", event => {
   loadProject(event.target.value);

@@ -11,9 +11,7 @@
     <header class="hero">
       <p class="eyebrow">Symbolic AI · PDDL · Automated Planning</p>
       <h1>PDDL Rover Plan Visualizer</h1>
-      <p>
-        Step-by-step visualization of a rover executing a generated PDDL plan.
-      </p>
+      <p>Step-by-step visualization of a rover executing a generated PDDL plan.</p>
     </header>
 
     <section class="layout">
@@ -23,29 +21,57 @@
             <h2 id="scenario-title">Scenario 1</h2>
             <p>Rover movement, mineral pickup, and delivery actions.</p>
 
-            <label for="scenario-select" class="scenario-label">Select scenario</label>
-            <select id="scenario-select">
-              <option value="1">Scenario 1</option>
-              <option value="2">Scenario 2</option>
-              <option value="3">Scenario 3</option>
-            </select>
+            <div class="mode-selector">
+              <label>
+                <input type="radio" name="mode" value="built-in" checked />
+                Use built-in scenarios
+              </label>
+
+              <label>
+                <input type="radio" name="mode" value="custom" />
+                Load custom PDDL problem
+              </label>
+            </div>
+
+            <div id="built-in-panel">
+              <label for="scenario-select" class="scenario-label">Select scenario</label>
+              <select id="scenario-select">
+                <option value="1">Scenario 1</option>
+                <option value="2">Scenario 2</option>
+                <option value="3">Scenario 3</option>
+              </select>
+            </div>
+
+            <div id="custom-panel" class="file-loader hidden">
+              <div class="file-input-group">
+                <label for="problem-file" class="file-label">Upload problem.pddl</label>
+                <input type="file" id="problem-file" accept=".pddl" />
+              </div>
+
+              <div class="file-input-group">
+                <label for="plan-file" class="file-label">Upload sas_plan / plan file</label>
+                <input type="file" id="plan-file" accept=".txt,.plan" />
+              </div>
+
+              <button id="load-files-btn" type="button">Load PDDL Files</button>
+            </div>
           </div>
 
           <span id="step-counter" class="badge">Step 0 / 0</span>
         </div>
 
-        <svg id="graph" viewBox="0 0 560 560" aria-label="Rover planning graph"></svg>
+        <svg id="graph" viewBox="0 0 560 660" aria-label="Rover planning graph"></svg>
       </section>
 
       <aside class="panel info-panel">
         <h2>Execution Controls</h2>
 
-       <div class="controls">
-        <button id="prev-btn">Previous</button>
-        <button id="next-btn">Next Step</button>
-        <button id="play-btn">Play</button>
-        <button id="reset-btn">Reset</button>
-       </div>
+        <div class="controls">
+          <button id="prev-btn">Previous</button>
+          <button id="next-btn">Next Step</button>
+          <button id="play-btn">Play</button>
+          <button id="reset-btn">Reset</button>
+        </div>
 
         <div class="state-card">
           <h3>Current Action</h3>
