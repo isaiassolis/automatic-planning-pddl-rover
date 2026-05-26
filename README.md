@@ -90,17 +90,17 @@ automatic-planning-pddl-rover/
 │   └── scenario3.png
 │   
 ├── visualizer/
-│   ├── index.html
-│   ├── style.css
-│   ├── app.js
-│   │
-│   └── data/
-│       ├── scenario1.json
-│       ├── scenario2.json
-│       ├── scenario3.json
-│       ├── problem1_plan.txt
-│       ├── problem2_plan.txt
-│       └── problem3_plan.txt
+    ├── index.html
+    ├── style.css
+    ├── app.js
+    │
+    └── data/
+        ├── scenario1.json
+        ├── scenario2.json
+        ├── scenario3.json
+        ├── problem1_plan.txt
+        ├── problem2_plan.txt
+        └── problem3_plan.txt
  
 
 ```
