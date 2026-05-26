@@ -21,6 +21,13 @@ const builtInPanel = document.getElementById("built-in-panel");
 const customPanel = document.getElementById("custom-panel");
 const modeInputs = document.querySelectorAll('input[name="mode"]');
 
+const domainFileInput = document.getElementById("domain-file");
+const domainNameEl = document.getElementById("domain-name");
+const domainPredicatesEl = document.getElementById("domain-predicates");
+const domainActionsEl = document.getElementById("domain-actions");
+
+const validationStatusEl = document.getElementById("validation-status");
+
 let autoplayInterval = null;
 
 let scenario = null;
@@ -28,6 +35,9 @@ let plan = [];
 let currentStep = 0;
 let initialState = null;
 let state = null;
+
+let previousRoverLocation = null;
+let isAnimating = false;
 
 async function loadProject(scenarioNumber = "1") {
   stopAutoplay();
@@ -52,6 +62,13 @@ async function loadProject(scenarioNumber = "1") {
   state = cloneState(initialState);
 
   scenarioTitle.textContent = scenario.name;
+
+  domainNameEl.textContent = "Built-in Rover Domain";
+  domainPredicatesEl.textContent = "at, rock-at, connected, carrying, empty, lab, accepts, delivered";
+  domainActionsEl.textContent = "move, pickup, drop";
+
+  validationStatusEl.textContent = "No validation errors.";
+  validationStatusEl.className = "validation-ok";
   renderPlan();
   updateView();
 }
@@ -112,16 +129,93 @@ function applyAction(planAction) {
   }
 }
 
+function validateAction(planAction) {
+  const { action, args } = planAction;
+
+  if (action === "move") {
+    const [, from, to] = args;
+
+    if (state.roverLocation !== from) {
+      return `Invalid move: rover is at ${state.roverLocation.toUpperCase()}, not ${from.toUpperCase()}.`;
+    }
+
+    const edgeExists = scenario.edges.some(
+      ([edgeFrom, edgeTo]) => edgeFrom === from && edgeTo === to
+    );
+
+    if (!edgeExists) {
+      return `Invalid move: no connection from ${from.toUpperCase()} to ${to.toUpperCase()}.`;
+    }
+  }
+
+  if (action === "pickup") {
+    const [, rock, location] = args;
+
+    if (state.roverLocation !== location) {
+      return `Invalid pickup: rover is at ${state.roverLocation.toUpperCase()}, not ${location.toUpperCase()}.`;
+    }
+
+    if (state.carrying !== null) {
+      return `Invalid pickup: rover is already carrying ${state.carrying}.`;
+    }
+
+    if (state.rocks[rock] !== location) {
+      return `Invalid pickup: ${rock} is not at ${location.toUpperCase()}.`;
+    }
+  }
+
+  if (action === "drop") {
+    const [, rock, location] = args;
+
+    if (state.roverLocation !== location) {
+      return `Invalid drop: rover is at ${state.roverLocation.toUpperCase()}, not ${location.toUpperCase()}.`;
+    }
+
+    if (state.carrying !== rock) {
+      return `Invalid drop: rover is carrying ${state.carrying || "nothing"}, not ${rock}.`;
+    }
+
+    const acceptedRocks = scenario.labs[location] || [];
+
+    if (!acceptedRocks.includes(rock)) {
+      return `Invalid drop: ${location.toUpperCase()} does not accept ${rock}.`;
+    }
+  }
+
+  return null;
+}
+
 function nextStep() {
-  if (currentStep >= plan.length) return;
+  if (currentStep >= plan.length || isAnimating) return;
+
+  const actionToExecute = plan[currentStep];
+
+  const validationError = validateAction(actionToExecute);
+
+  if (validationError) {
+    validationStatusEl.textContent = validationError;
+    validationStatusEl.className = "validation-error";
+    stopAutoplay();
+    return;
+  }
+
+  validationStatusEl.textContent = "Current action is valid.";
+  validationStatusEl.className = "validation-ok";
+
+  previousRoverLocation = state.roverLocation;
 
   currentStep += 1;
   rebuildStateUntil(currentStep);
-  updateView();
+
+  if (actionToExecute.action === "move") {
+    animateRover(previousRoverLocation, state.roverLocation);
+  } else {
+    updateView();
+  }
 }
 
 function previousStep() {
-  if (currentStep <= 0) return;
+  if (currentStep <= 0 || isAnimating) return;
 
   currentStep -= 1;
   rebuildStateUntil(currentStep);
@@ -129,11 +223,65 @@ function previousStep() {
 }
 
 function resetExecution() {
+  if (isAnimating) return;
+
   stopAutoplay();
   currentStep = 0;
   state = cloneState(initialState);
+  validationStatusEl.textContent = "No validation errors.";
+  validationStatusEl.className = "validation-ok";
   updateView();
 }
+
+
+function animateRover(fromLocationId, toLocationId) {
+  const from = scenario.locations[fromLocationId];
+  const to = scenario.locations[toLocationId];
+
+  if (!from || !to) {
+    updateView();
+    return;
+  }
+
+  isAnimating = true;
+
+  drawGraph();
+
+  const rover = document.getElementById("animated-rover");
+  const roverLabel = document.getElementById("animated-rover-label");
+
+  const startX = from.x;
+  const startY = from.y - 48;
+  const endX = to.x;
+  const endY = to.y - 48;
+
+  const duration = 500;
+  const startTime = performance.now();
+
+  function animateFrame(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+
+    const currentX = startX + (endX - startX) * progress;
+    const currentY = startY + (endY - startY) * progress;
+
+    rover.setAttribute("cx", currentX);
+    rover.setAttribute("cy", currentY);
+
+    roverLabel.setAttribute("x", currentX);
+    roverLabel.setAttribute("y", currentY - 26);
+
+    if (progress < 1) {
+      requestAnimationFrame(animateFrame);
+    } else {
+      isAnimating = false;
+      updateView();
+    }
+  }
+
+  requestAnimationFrame(animateFrame);
+}
+
 
 function updateView() {
   drawGraph();
@@ -336,6 +484,7 @@ function drawRover() {
   const location = scenario.locations[state.roverLocation];
 
   const rover = createSvgElement("circle");
+  rover.setAttribute("id", "animated-rover");
   rover.setAttribute("cx", location.x);
   rover.setAttribute("cy", location.y - 48);
   rover.setAttribute("r", 16);
@@ -343,6 +492,7 @@ function drawRover() {
   graph.appendChild(rover);
 
   const label = createSvgElement("text");
+  label.setAttribute("id", "animated-rover-label");
   label.setAttribute("x", location.x);
   label.setAttribute("y", location.y - 74);
   label.setAttribute("class", "item-label");
@@ -414,8 +564,12 @@ async function loadCustomPddlFiles() {
   try {
     stopAutoplay();
 
+    const domainText = await readUploadedFile(domainFileInput.files[0]);
     const problemText = await readUploadedFile(problemFileInput.files[0]);
     const planText = await readUploadedFile(planFileInput.files[0]);
+
+    const parsedDomain = parsePddlDomain(domainText);
+    renderDomainInfo(parsedDomain);
 
     scenario = parsePddlProblem(problemText);
     plan = parsePlan(planText);
@@ -432,6 +586,10 @@ async function loadCustomPddlFiles() {
     state = cloneState(initialState);
 
     scenarioTitle.textContent = scenario.name;
+    
+    validationStatusEl.textContent = "No validation errors.";
+    validationStatusEl.className = "validation-ok";
+    
     renderPlan();
     updateView();
   } catch (error) {
@@ -548,6 +706,85 @@ modeInputs.forEach(input => {
     }
   });
 });
+
+function parsePddlDomain(domainText) {
+  const cleanText = domainText
+    .replace(/;.*$/gm, "")
+    .replace(/\s+/g, " ")
+    .toLowerCase();
+
+  const domainNameMatch = cleanText.match(/\(domain\s+([a-z0-9_-]+)\)/);
+  const domainName = domainNameMatch ? domainNameMatch[1] : "unknown-domain";
+
+  const predicates = [];
+  const predicatesBlock = extractPddlSection(cleanText, ":predicates");
+
+  if (predicatesBlock) {
+    const predicateMatches = [...predicatesBlock.matchAll(/\(([a-z0-9_-]+)/g)];
+
+    predicateMatches.forEach(match => {
+      const predicateName = match[1];
+
+      if (!predicates.includes(predicateName)) {
+        predicates.push(predicateName);
+      }
+    });
+  }
+
+  const actions = [];
+  const actionMatches = [...cleanText.matchAll(/\(:action\s+([a-z0-9_-]+)/g)];
+
+  actionMatches.forEach(match => {
+    const actionName = match[1];
+
+    actions.push({
+      name: actionName
+    });
+  });
+
+  return {
+    name: domainName,
+    predicates,
+    actions
+  };
+}
+
+function extractPddlSection(text, sectionName) {
+  const startIndex = text.indexOf(`(${sectionName}`);
+
+  if (startIndex === -1) return null;
+
+  let depth = 0;
+  let section = "";
+
+  for (let i = startIndex; i < text.length; i++) {
+    const char = text[i];
+
+    if (char === "(") depth++;
+    if (char === ")") depth--;
+
+    section += char;
+
+    if (depth === 0) break;
+  }
+
+  return section;
+}
+
+function renderDomainInfo(parsedDomain) {
+  domainNameEl.textContent = parsedDomain.name;
+
+  domainPredicatesEl.textContent =
+    parsedDomain.predicates.length > 0
+      ? parsedDomain.predicates.join(", ")
+      : "No predicates detected";
+
+  domainActionsEl.textContent =
+    parsedDomain.actions.length > 0
+      ? parsedDomain.actions.map(action => action.name).join(", ")
+      : "No actions detected";
+}
+
 
 
 prevBtn.addEventListener("click", previousStep);

@@ -20,14 +20,19 @@ The repository also includes a web-based interactive visualizer capable of execu
 
 ### Visualizer Features
 
-- Multiple planning scenarios
-- Interactive scenario selection
-- Step-by-step execution
-- Automatic playback mode
-- Rover state tracking
-- Mineral pickup and delivery simulation
-- Dynamic SVG graph rendering
-- Laboratory compatibility visualization
+- Interactive SVG-based planning visualization
+- Built-in rover planning scenarios
+- Dynamic loading of custom PDDL files
+- PDDL domain parsing
+- PDDL problem parsing
+- Plan parsing and execution
+- Real-time rover animation
+- Action highlighting
+- Symbolic action validation
+- Invalid plan detection
+- Laboratory compatibility checking
+- Automatic execution playback
+- Interactive execution controls
 
 ### Visualizer Preview
 
@@ -254,6 +259,49 @@ Users can:
 
 ---
 
+## Symbolic Plan Validation
+
+The system validates symbolic actions before execution by checking:
+
+- rover position consistency,
+- valid graph connectivity,
+- object availability,
+- carrying constraints,
+- laboratory compatibility.
+
+Invalid plans are automatically detected and execution stops with an explanatory validation message.
+
+Example:
+
+```text
+Invalid move: no connection from L5 to L6
+```
+
+---
+## PDDL Parsing Pipeline
+
+The visualizer processes planning information through multiple symbolic reasoning stages:
+
+```text
+domain.pddl
+        ↓
+Domain Parser
+        ↓
+problem.pddl
+        ↓
+Problem Interpreter
+        ↓
+Plan Validator
+        ↓
+Execution Engine
+        ↓
+Interactive SVG Visualizer
+```
+
+The current implementation supports symbolic parsing and validation for the Rover planning domain.
+
+---
+
 ## Live Demo
 
 https://darksite79.github.io/automatic-planning-pddl-rover/visualizer/
@@ -305,12 +353,16 @@ This makes PDDL-based planning especially relevant for:
 
 ## Future Work
 
-Possible extensions of this project include:
+Planned extensions include:
 
-* adding more IPC planners,
-* comparing modern planners,
-* creating automated benchmark scripts,
-* integrating LLMs to generate PDDL from natural language descriptions.
+- explainable action semantics,
+- automatic extraction of preconditions and effects,
+- generic multi-domain support,
+- planner integration,
+- Fast Downward backend execution,
+- support for additional IPC benchmark domains,
+- LLM-to-PDDL generation,
+- hybrid neuro-symbolic planning workflows.
 
 ---
 
