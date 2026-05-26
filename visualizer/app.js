@@ -133,8 +133,11 @@ function updateView() {
 
   if (currentStep === 0) {
     currentActionEl.textContent = "No action executed yet.";
+    currentActionEl.className = "";
   } else {
-    currentActionEl.textContent = plan[currentStep - 1].raw;
+    const currentAction = plan[currentStep - 1];
+    currentActionEl.textContent = currentAction.raw;
+    currentActionEl.className = `action-${currentAction.action}`;
   }
 
   roverLocationEl.textContent = state.roverLocation.toUpperCase();
@@ -172,6 +175,11 @@ function renderPlan() {
   });
 }
 
+function getCurrentPlanAction() {
+  if (currentStep === 0) return null;
+  return plan[currentStep - 1];
+}
+
 function drawGraph() {
   graph.innerHTML = "";
 
@@ -206,6 +214,8 @@ function createArrowMarker() {
 }
 
 function drawEdges() {
+  const currentAction = getCurrentPlanAction();
+
   scenario.edges.forEach(([from, to]) => {
     const start = scenario.locations[from];
     const end = scenario.locations[to];
@@ -216,7 +226,14 @@ function drawEdges() {
     line.setAttribute("y1", start.y);
     line.setAttribute("x2", end.x);
     line.setAttribute("y2", end.y);
-    line.setAttribute("class", "edge");
+
+    const isActiveMove =
+      currentAction &&
+      currentAction.action === "move" &&
+      currentAction.args[1] === from &&
+      currentAction.args[2] === to;
+
+    line.setAttribute("class", isActiveMove ? "edge active-edge" : "edge");
     line.setAttribute("marker-end", "url(#arrow)");
 
     graph.appendChild(line);
@@ -224,12 +241,29 @@ function drawEdges() {
 }
 
 function drawLocations() {
+  const currentAction = getCurrentPlanAction();
+
   Object.entries(scenario.locations).forEach(([id, location]) => {
+    let activeLocation = false;
+
+    if (currentAction) {
+      if (currentAction.action === "move" && currentAction.args[2] === id) {
+        activeLocation = true;
+      }
+
+      if (
+        (currentAction.action === "pickup" || currentAction.action === "drop") &&
+        currentAction.args[2] === id
+      ) {
+        activeLocation = true;
+      }
+    }
+
     const circle = createSvgElement("circle");
     circle.setAttribute("cx", location.x);
     circle.setAttribute("cy", location.y);
     circle.setAttribute("r", 28);
-    circle.setAttribute("class", "location");
+    circle.setAttribute("class", activeLocation ? "location active-location" : "location");
     graph.appendChild(circle);
 
     const label = createSvgElement("text");
