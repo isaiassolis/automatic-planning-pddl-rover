@@ -14,30 +14,6 @@ The goal is to provide a practical, educational, and reproducible example of sym
 
 ---
 
-## Interactive Rover Visualizer
-
-The repository also includes a web-based interactive visualizer capable of executing rover planning scenarios step-by-step.
-
-### Visualizer Features
-
-- Interactive SVG-based planning visualization
-- Built-in rover planning scenarios
-- Dynamic loading of custom PDDL files
-- PDDL domain parsing
-- PDDL problem parsing
-- Plan parsing and execution
-- Real-time rover animation
-- Action highlighting
-- Symbolic action validation
-- Invalid plan detection
-- Laboratory compatibility checking
-- Automatic execution playback
-- Interactive execution controls
-
-### Visualizer Preview
-
-![Visualizer](screenshots/visualizer.png)
-
 
 ## Project Overview
 
@@ -238,6 +214,30 @@ This scenario introduces:
 * more complex delivery constraints.
 
 ---
+
+## Interactive Rover Visualizer
+
+The repository also includes a web-based interactive visualizer capable of executing rover planning scenarios step-by-step.
+
+### Visualizer Features
+
+- Interactive SVG-based planning visualization
+- Built-in rover planning scenarios
+- Dynamic loading of custom PDDL files
+- PDDL domain parsing
+- PDDL problem parsing
+- Plan parsing and execution
+- Real-time rover animation
+- Action highlighting
+- Symbolic action validation
+- Invalid plan detection
+- Laboratory compatibility checking
+- Automatic execution playback
+- Interactive execution controls
+
+### Visualizer Preview
+
+![Visualizer](screenshots/visualizer.png)
 
 ## Web-Based Planning Visualization
 
