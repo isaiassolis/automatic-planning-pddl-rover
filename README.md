@@ -310,8 +310,6 @@ Possible extensions of this project include:
 * adding more IPC planners,
 * comparing modern planners,
 * creating automated benchmark scripts,
-* visualizing generated plans,
-* building a web-based planning visualizer,
 * integrating LLMs to generate PDDL from natural language descriptions.
 
 ---
