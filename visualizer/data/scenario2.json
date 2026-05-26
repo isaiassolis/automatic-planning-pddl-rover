@@ -1,0 +1,32 @@
+{
+  "name": "Scenario 2: Expanded Environment",
+  "locations": {
+    "l1": { "x": 100, "y": 120, "label": "L1" },
+    "l2": { "x": 280, "y": 120, "label": "L2" },
+    "l3": { "x": 190, "y": 260, "label": "L3" },
+    "l4": { "x": 360, "y": 260, "label": "L4" },
+    "l5": { "x": 360, "y": 430, "label": "L5" },
+    "l6": { "x": 500, "y": 120, "label": "L6" }
+  },
+  "edges": [
+    ["l1", "l3"],
+    ["l3", "l1"],
+    ["l3", "l2"],
+    ["l2", "l4"],
+    ["l3", "l4"],
+    ["l4", "l3"],
+    ["l4", "l5"],
+    ["l5", "l4"],
+    ["l4", "l6"],
+    ["l6", "l2"]
+  ],
+  "roverStart": "l4",
+  "rocks": {
+    "rock1": "l1",
+    "rock2": "l2",
+    "rock3": "l6"
+  },
+  "labs": {
+    "l5": ["rock1", "rock2", "rock3"]
+  }
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDDL Rover Plan Visualizer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <p class="eyebrow">Symbolic AI · PDDL · Automated Planning</p>
+      <h1>PDDL Rover Plan Visualizer</h1>
+      <p>
+        Step-by-step visualization of a rover executing a generated PDDL plan.
+      </p>
+    </header>
+
+    <section class="layout">
+      <section class="panel graph-panel">
+        <div class="panel-header">
+          <div>
+            <h2 id="scenario-title">Scenario 1</h2>
+            <p>Rover movement, mineral pickup, and delivery actions.</p>
+
+            <label for="scenario-select" class="scenario-label">Select scenario</label>
+            <select id="scenario-select">
+              <option value="1">Scenario 1</option>
+              <option value="2">Scenario 2</option>
+              <option value="3">Scenario 3</option>
+            </select>
+          </div>
+
+          <span id="step-counter" class="badge">Step 0 / 0</span>
+        </div>
+
+        <svg id="graph" viewBox="0 0 560 560" aria-label="Rover planning graph"></svg>
+      </section>
+
+      <aside class="panel info-panel">
+        <h2>Execution Controls</h2>
+
+       <div class="controls">
+        <button id="prev-btn">Previous</button>
+        <button id="next-btn">Next Step</button>
+        <button id="play-btn">Play</button>
+        <button id="reset-btn">Reset</button>
+       </div>
+
+        <div class="state-card">
+          <h3>Current Action</h3>
+          <p id="current-action">No action executed yet.</p>
+        </div>
+
+        <div class="state-card">
+          <h3>Rover State</h3>
+          <p><strong>Location:</strong> <span id="rover-location">-</span></p>
+          <p><strong>Carrying:</strong> <span id="rover-carrying">Nothing</span></p>
+        </div>
+
+        <div class="state-card">
+          <h3>Delivered Minerals</h3>
+          <ul id="delivered-list"></ul>
+        </div>
+
+        <div class="state-card plan-card">
+          <h3>Plan</h3>
+          <ol id="plan-list"></ol>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

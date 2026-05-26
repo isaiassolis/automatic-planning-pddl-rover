@@ -1,0 +1,28 @@
+{
+  "name": "Scenario 1: Basic Mineral Transportation",
+  "locations": {
+    "l1": { "x": 120, "y": 120, "label": "L1" },
+    "l2": { "x": 420, "y": 120, "label": "L2" },
+    "l3": { "x": 270, "y": 120, "label": "L3" },
+    "l4": { "x": 270, "y": 280, "label": "L4" },
+    "l5": { "x": 270, "y": 440, "label": "L5" }
+  },
+  "edges": [
+    ["l1", "l3"],
+    ["l3", "l1"],
+    ["l3", "l2"],
+    ["l2", "l4"],
+    ["l3", "l4"],
+    ["l4", "l3"],
+    ["l4", "l5"],
+    ["l5", "l4"]
+  ],
+  "roverStart": "l4",
+  "rocks": {
+    "rock1": "l1",
+    "rock2": "l2"
+  },
+  "labs": {
+    "l5": ["rock1", "rock2"]
+  }
+}
