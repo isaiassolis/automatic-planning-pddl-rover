@@ -1,3 +1,8 @@
+![PDDL](https://img.shields.io/badge/PDDL-Automated%20Planning-blue)
+![IPC2018](https://img.shields.io/badge/IPC-2018-red)
+![Linux](https://img.shields.io/badge/Linux-Pop!__OS-green)
+![License](https://img.shields.io/badge/license-MIT-yellow)
+
 # Automatic Planning with PDDL and IPC 2018 Planners
 
 This repository presents a reproducible hands-on project for learning and experimenting with **automated planning**, **PDDL**, and classical planners from the **International Planning Competition (IPC) 2018**.
@@ -158,6 +163,8 @@ The domain includes three main actions:
 
 ### Scenario 1: Basic Mineral Transportation
 
+![Scenario 1](screenshots/Escenario1.png)
+
 The rover starts at location `L4` and must collect two minerals located at different locations. Both minerals must be delivered to laboratory `L5`.
 
 This scenario introduces:
@@ -169,6 +176,8 @@ This scenario introduces:
 
 ### Scenario 2: Expanded Environment
 
+![Scenario 2](screenshots/Escenario2.png)
+
 The second scenario adds a new mineral and additional locations, increasing the complexity of the search space.
 
 This scenario introduces:
@@ -179,6 +188,8 @@ This scenario introduces:
 * expanded navigation constraints.
 
 ### Scenario 3: Specialized Laboratories
+
+![Scenario 3](screenshots/Escenario3.png)
 
 The third scenario introduces two specialized laboratories. Each laboratory accepts only specific minerals.
 
