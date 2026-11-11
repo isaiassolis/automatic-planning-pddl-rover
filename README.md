@@ -1,9 +1,28 @@
-![PDDL](https://img.shields.io/badge/PDDL-Automated%20Planning-blue)
-![IPC2018](https://img.shields.io/badge/IPC-2018-red)
-![Linux](https://img.shields.io/badge/Linux-Pop!__OS-green)
-![License](https://img.shields.io/badge/license-MIT-yellow)
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0B1220,50:12395D,100:087F8C&height=205&section=header&text=Automatic%20Planning%20PDDL%20Rover&fontSize=32&fontColor=ffffff&desc=Symbolic%20AI%20%7C%20Automated%20Planning%20%7C%20Interactive%20Visualizer&descAlignY=66&descSize=15&animation=fadeIn" width="100%" alt="Automatic Planning PDDL Rover — Symbolic AI and interactive visualizer" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/AI-Symbolic%20Planning-087F8C?style=for-the-badge" alt="Symbolic AI" />
+  <img src="https://img.shields.io/badge/PDDL-Rover%20Domain-12395D?style=for-the-badge" alt="PDDL rover domain" />
+  <img src="https://img.shields.io/badge/IPC-2018-0B91A1?style=for-the-badge" alt="IPC 2018" />
+  <img src="https://img.shields.io/badge/License-MIT-12395D?style=for-the-badge" alt="MIT License" />
+</p>
+
+<p align="center">
+  <a href="https://isaiassolis.github.io/automatic-planning-pddl-rover/visualizer/"><img src="https://img.shields.io/badge/%E2%96%B6%20Try%20Live%20Demo-087F8C?style=for-the-badge" alt="Try live rover visualizer" /></a>
+  <a href="https://github.com/isaiassolis"><img src="https://img.shields.io/badge/Author-Isa%C3%ADas%20Sol%C3%ADs-0B1220?style=for-the-badge&logo=github&logoColor=white" alt="Author GitHub profile" /></a>
+</p>
 
 # Automatic Planning with PDDL and IPC 2018 Planners
+
+> **Academic project · Symbolic AI.** A practical, reproducible exploration of automated planning using PDDL and classical planners, including an interactive rover visualizer.
+
+### [▶ Explore the interactive rover demo](https://isaiassolis.github.io/automatic-planning-pddl-rover/visualizer/)
+
+![Interactive Rover Visualizer](screenshots/visualizer.png)
+
+**What this project demonstrates:** symbolic modeling of states, actions, constraints, and goals; experiments with classical planning algorithms; and a JavaScript/SVG interface for stepping through and validating generated plans.
 
 This repository presents a reproducible hands-on project for learning and experimenting with **automated planning**, **PDDL**, and classical planners from the **International Planning Competition (IPC) 2018**.
 
@@ -15,7 +34,7 @@ The goal is to provide a practical, educational, and reproducible example of sym
 ---
 
 
-## Project Overview
+## 🧭 Project Overview
 
 Automated planning is a field of symbolic artificial intelligence focused on generating sequences of actions that transform an initial state into a desired goal state.
 
@@ -28,7 +47,7 @@ The project also includes a custom Rover domain designed to demonstrate how a si
 
 ---
 
-## Main Features
+## ✨ Main Features
 
 * Reproducible execution using Singularity containers.
 * Execution of IPC 2018 planners.
@@ -42,7 +61,7 @@ The project also includes a custom Rover domain designed to demonstrate how a si
 
 ---
 
-## Repository Structure
+## 📁 Repository Structure
 
 ```text
 automatic-planning-pddl-rover/
@@ -88,7 +107,7 @@ automatic-planning-pddl-rover/
 
 ---
 
-## Requirements
+## ⚙️ Requirements
 
 This project was tested on a Linux environment using:
 
@@ -112,7 +131,7 @@ singularity --version
 
 ---
 
-## Building a Planner Container
+## 🛠️ Building a Planner Container
 
 From inside the planner directory, build the Singularity image using:
 
@@ -124,7 +143,7 @@ This generates a `planner.img` file containing the required planner environment.
 
 ---
 
-## Running a Planner
+## ▶️ Running a Planner
 
 Create a runtime directory and define the domain, problem, and output plan file:
 
@@ -145,7 +164,7 @@ The generated plan will be saved in the output file defined by `PLANFILE`.
 
 ---
 
-## Rover Domain
+## 🤖 Rover Domain
 
 The custom Rover domain models a rover that must transport minerals from different locations to analysis laboratories.
 
@@ -172,7 +191,7 @@ The domain includes three main actions:
 
 ---
 
-## Planning Scenarios
+## 🗺️ Planning Scenarios
 
 ### Scenario 1: Basic Mineral Transportation
 
@@ -215,7 +234,7 @@ This scenario introduces:
 
 ---
 
-## Interactive Rover Visualizer
+## 🖥️ Interactive Rover Visualizer
 
 The repository also includes a web-based interactive visualizer capable of executing rover planning scenarios step-by-step.
 
@@ -239,7 +258,7 @@ The repository also includes a web-based interactive visualizer capable of execu
 
 ![Visualizer](screenshots/visualizer.png)
 
-## Web-Based Planning Visualization
+## 🎞️ Web-Based Planning Visualization
 
 A lightweight frontend visualizer was developed using:
 
@@ -259,7 +278,7 @@ Users can:
 
 ---
 
-## Symbolic Plan Validation
+## ✅ Symbolic Plan Validation
 
 The system validates symbolic actions before execution by checking:
 
@@ -278,7 +297,7 @@ Invalid move: no connection from L5 to L6
 ```
 
 ---
-## PDDL Parsing Pipeline
+## 🔄 PDDL Parsing Pipeline
 
 The visualizer processes planning information through multiple symbolic reasoning stages:
 
@@ -302,15 +321,15 @@ The current implementation supports symbolic parsing and validation for the Rove
 
 ---
 
-## Live Demo
+## 🔗 Live Demo
 
-**New GitHub Pages address** (availability depends on deployment finishing successfully):
+**Live interactive visualizer:**
 
 https://isaiassolis.github.io/automatic-planning-pddl-rover/visualizer/
 
 ---
 
-## Experimental Results
+## 📊 Experimental Results
 
 | Scenario  | Plan Length | Plan Cost | Total Time |
 | --------- | ----------: | --------: | ---------: |
@@ -322,7 +341,7 @@ The results show that increasing the complexity of the environment produces long
 
 ---
 
-## Planner Comparison
+## 📈 Planner Comparison
 
 The Snake benchmark was used to compare two IPC 2018 planners: Delfi1 and Complementary2.
 
@@ -338,7 +357,7 @@ Both planners found optimal solutions. However, Delfi1 showed a more efficient p
 
 ---
 
-## Why This Project Matters
+## 💡 Why This Project Matters
 
 This project demonstrates how symbolic AI can be used to model and solve structured decision-making problems. Unlike purely data-driven machine learning projects, automated planning focuses on explicit representations of actions, states, constraints, and goals.
 
@@ -353,7 +372,7 @@ This makes PDDL-based planning especially relevant for:
 
 ---
 
-## Future Work
+## 🚀 Future Work
 
 Planned extensions include:
 
@@ -368,7 +387,7 @@ Planned extensions include:
 
 ---
 
-## License
+## 📜 License
 
 This project is intended for educational and research purposes.
 
