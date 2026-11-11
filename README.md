@@ -304,7 +304,9 @@ The current implementation supports symbolic parsing and validation for the Rove
 
 ## Live Demo
 
-https://darksite79.github.io/automatic-planning-pddl-rover/visualizer/
+**New GitHub Pages address** (availability depends on deployment finishing successfully):
+
+https://isaiassolis.github.io/automatic-planning-pddl-rover/visualizer/
 
 ---
 
@@ -370,4 +372,4 @@ Planned extensions include:
 
 This project is intended for educational and research purposes.
 
-A permissive license such as MIT can be added if the repository is intended to be publicly shared.
+The source code in this repository is distributed under the [MIT License](LICENSE).
