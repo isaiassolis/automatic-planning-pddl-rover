@@ -1,394 +1,239 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0B1220,50:12395D,100:087F8C&height=205&section=header&text=Automatic%20Planning%20PDDL%20Rover&fontSize=32&fontColor=ffffff&desc=Symbolic%20AI%20%7C%20Automated%20Planning%20%7C%20Interactive%20Visualizer&descAlignY=66&descSize=15&animation=fadeIn" width="100%" alt="Automatic Planning PDDL Rover — Symbolic AI and interactive visualizer" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0B1220,50:12395D,100:087F8C&height=205&section=header&text=Automatic%20Planning%20PDDL%20Rover&fontSize=32&fontColor=ffffff&desc=Symbolic%20AI%20%7C%20Automated%20Planning%20%7C%20Interactive%20Visualizer&descAlignY=66&descSize=15&animation=fadeIn" width="100%" alt="Planificación automática con PDDL y visualizador interactivo Rover" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/AI-Symbolic%20Planning-087F8C?style=for-the-badge" alt="Symbolic AI" />
-  <img src="https://img.shields.io/badge/PDDL-Rover%20Domain-12395D?style=for-the-badge" alt="PDDL rover domain" />
-  <img src="https://img.shields.io/badge/IPC-2018-0B91A1?style=for-the-badge" alt="IPC 2018" />
-  <img src="https://img.shields.io/badge/License-MIT-12395D?style=for-the-badge" alt="MIT License" />
+  <img src="https://img.shields.io/badge/AI-Symbolic%20Planning-087F8C?style=for-the-badge" alt="Inteligencia artificial simbólica" />
+  <img src="https://img.shields.io/badge/PDDL-Rover%20Domain-12395D?style=for-the-badge" alt="Dominio Rover en PDDL" />
+  <img src="https://img.shields.io/badge/IPC-2018-0B91A1?style=for-the-badge" alt="Planificadores IPC 2018" />
+  <img src="https://img.shields.io/badge/License-MIT-12395D?style=for-the-badge" alt="Licencia MIT" />
 </p>
 
 <p align="center">
-  <a href="https://isaiassolis.github.io/automatic-planning-pddl-rover/visualizer/"><img src="https://img.shields.io/badge/%E2%96%B6%20Try%20Live%20Demo-087F8C?style=for-the-badge" alt="Try live rover visualizer" /></a>
-  <a href="https://github.com/isaiassolis"><img src="https://img.shields.io/badge/Author-Isa%C3%ADas%20Sol%C3%ADs-0B1220?style=for-the-badge&logo=github&logoColor=white" alt="Author GitHub profile" /></a>
+  <a href="https://isaiassolis.github.io/automatic-planning-pddl-rover/visualizer/"><img src="https://img.shields.io/badge/%E2%96%B6%20Try%20Live%20Demo-087F8C?style=for-the-badge" alt="Abrir visualizador interactivo" /></a>
+  <a href="https://github.com/isaiassolis"><img src="https://img.shields.io/badge/Author-Isa%C3%ADas%20Sol%C3%ADs-0B1220?style=for-the-badge&logo=github&logoColor=white" alt="Perfil de Isaías Solís" /></a>
 </p>
 
-# Automatic Planning with PDDL and IPC 2018 Planners
+# Planificación automática con PDDL — Rover e IPC 2018
 
-> **Academic project · Symbolic AI.** A practical, reproducible exploration of automated planning using PDDL and classical planners, including an interactive rover visualizer.
+**Inteligencia artificial simbólica · Modelado de acciones y restricciones · Desarrollo de visualizador interactivo**
 
-### [▶ Explore the interactive rover demo](https://isaiassolis.github.io/automatic-planning-pddl-rover/visualizer/)
+Desarrollé este proyecto para explorar la **planificación automática**, una rama de la inteligencia artificial que permite encontrar secuencias de acciones capaces de transformar un estado inicial en un estado objetivo.
 
-![Interactive Rover Visualizer](screenshots/visualizer.png)
+Trabajé con **PDDL (Planning Domain Definition Language)** y planificadores de la **International Planning Competition 2018**. Además de experimentar con problemas de referencia, diseñé un **dominio Rover** para el transporte de minerales y construí un **visualizador web en JavaScript y SVG** que permite ejecutar y comprobar planes paso a paso.
 
-**What this project demonstrates:** symbolic modeling of states, actions, constraints, and goals; experiments with classical planning algorithms; and a JavaScript/SVG interface for stepping through and validating generated plans.
+### [Explorar la demostración interactiva de Rover](https://isaiassolis.github.io/automatic-planning-pddl-rover/visualizer/)
 
-This repository presents a reproducible hands-on project for learning and experimenting with **automated planning**, **PDDL**, and classical planners from the **International Planning Competition (IPC) 2018**.
+![Visualizador interactivo Rover](screenshots/visualizer.png)
 
-The project includes the execution of IPC 2018 planners and the development of a custom **Rover transportation domain**, where an autonomous rover must collect minerals and deliver them to laboratories under different constraints.
+## El problema que quise resolver
 
-The goal is to provide a practical, educational, and reproducible example of symbolic AI planning.
+Un sistema autónomo necesita tomar decisiones respetando las condiciones de su entorno. No basta con definir un destino: hay que considerar qué acciones son posibles, qué recursos están disponibles y qué condiciones deben cumplirse antes de actuar.
 
+Con PDDL podemos representar **estados, acciones, precondiciones, efectos y objetivos**. Los planificadores utilizan ese modelo para buscar una secuencia válida de operaciones.
 
----
+Mi objetivo fue **conectar el razonamiento simbólico con una experiencia visual**, de modo que pudiera observarse cómo se ejecuta cada acción y por qué una operación es válida o inválida.
 
+## El dominio Rover
 
-## Project Overview
+Diseñé un escenario donde un rover autónomo debe **recoger minerales y entregarlos a laboratorios** mediante una red de ubicaciones conectadas.
 
-Automated planning is a field of symbolic artificial intelligence focused on generating sequences of actions that transform an initial state into a desired goal state.
+El dominio permite:
 
-In this project, planning problems are modeled using **PDDL (Planning Domain Definition Language)**. The experiments are executed using classical planners distributed through IPC 2018, mainly:
+- Desplazarse por rutas dirigidas o bidireccionales.
+- Recoger un mineral cuando el rover se encuentra en su ubicación.
+- Transportar **un mineral a la vez**.
+- Entregar materiales únicamente en laboratorios compatibles.
+- Comprobar que todos los minerales requeridos se entregaron.
 
-* **Delfi1**
-* **Complementary2**
+### Predicados principales
 
-The project also includes a custom Rover domain designed to demonstrate how a single `domain.pddl` file can be reused across multiple planning scenarios.
+| Predicado | Significado |
+| --- | --- |
+| `at` | Ubicación actual del rover |
+| `rock-at` | Posición de un mineral |
+| `connected` | Conexión permitida entre localidades |
+| `carrying` | Mineral que transporta el rover |
+| `empty` | Rover disponible para recoger material |
+| `lab` | Localidad con laboratorio |
+| `accepts` | Compatibilidad entre laboratorio y mineral |
+| `delivered` | Mineral entregado |
 
----
+Las acciones principales de mi dominio son **`move`**, **`pickup`** y **`drop`**. Sus precondiciones y efectos determinan cómo cambia el estado después de cada operación.
 
-## Main Features
+[Consultar el dominio PDDL](rover/domain.pddl).
 
-* Reproducible execution using Singularity containers.
-* Execution of IPC 2018 planners.
-* Analysis of the Snake benchmark domain.
-* Custom Rover domain developed in PDDL.
-* Three progressively complex planning scenarios.
-* Directed and bidirectional paths.
-* Mineral transportation constraints.
-* Specialized laboratories with compatibility rules.
-* Planner performance comparison.
+## Tres escenarios de planificación
 
----
+Construí tres problemas que reutilizan el mismo archivo `domain.pddl` y aumentan progresivamente las restricciones del entorno.
 
-## Repository Structure
+### Escenario 1 — Transporte básico
 
-```text
-automatic-planning-pddl-rover/
-│
-├── README.md
-├── LICENSE
-│
-├── rover/
-│   ├── domain.pddl
-│   ├── problem1.pddl
-│   ├── problem2.pddl
-│   └── problem3.pddl
-│
-├── snake/
-│   ├── domain.pddl
-│   └── p01.pddl
-│
-├── plans/
-│   ├── problem1_plan.txt
-│   ├── problem2_plan.txt
-│   └── problem3_plan.txt
-│
-├── screenshots/
-│   ├── scenario1.png
-│   ├── scenario2.png
-│   └── scenario3.png
-│   
-├── visualizer/
-    ├── index.html
-    ├── style.css
-    ├── app.js
-    │
-    └── data/
-        ├── scenario1.json
-        ├── scenario2.json
-        ├── scenario3.json
-        ├── problem1_plan.txt
-        ├── problem2_plan.txt
-        └── problem3_plan.txt
- 
+![Primer escenario del Rover](screenshots/Escenario1.png)
 
+El rover comienza en **L4**, debe recoger dos minerales en distintas ubicaciones y entregarlos al laboratorio **L5**. Introduce movimiento, recolección y rutas con direcciones específicas.
+
+### Escenario 2 — Entorno ampliado
+
+![Segundo escenario del Rover](screenshots/Escenario2.png)
+
+Agregué un mineral, más ubicaciones y nuevas rutas, aumentando el espacio de búsqueda y la longitud del plan.
+
+### Escenario 3 — Laboratorios especializados
+
+![Tercer escenario del Rover](screenshots/Escenario3.png)
+
+Incorporé dos laboratorios que reciben únicamente determinados minerales. El plan debe respetar no solo las rutas y la capacidad de carga, sino también la **compatibilidad de las entregas**.
+
+## Visualizador interactivo
+
+Además del modelado PDDL, desarrollé una aplicación web que permite **observar, ejecutar y validar planes** sin depender de una interfaz de línea de comandos.
+
+![Interfaz del visualizador interactivo](screenshots/visualizer.png)
+
+El visualizador incorpora:
+
+- Representación gráfica con **SVG**.
+- Carga de escenarios y planes.
+- Procesamiento de archivos PDDL del dominio Rover.
+- Ejecución manual y reproducción automática.
+- Animación del rover y seguimiento de minerales.
+- Identificación de la acción en ejecución.
+- Comprobación de rutas, estados y condiciones de transporte.
+- Detección de acciones inválidas y mensajes explicativos.
+
+### Cómo se procesa un plan
+
+```mermaid
+flowchart TD
+    A[domain.pddl] --> B[Interpretación del dominio]
+    C[problem.pddl] --> D[Estado inicial y objetivos]
+    B --> E[Validación de acciones]
+    D --> E
+    F[Plan generado] --> E
+    E --> G[Motor de ejecución]
+    G --> H[Visualizador SVG]
 ```
 
----
+Por ejemplo, si un plan intenta desplazarse entre ubicaciones que no están conectadas, el sistema detiene la ejecución y muestra un mensaje como:
 
-## Requirements
+```text
+Invalid move: no connection from L5 to L6
+```
 
-This project was tested on a Linux environment using:
+El parser y el validador implementados están enfocados en el **dominio Rover**.
 
-* Pop!_OS / Ubuntu-based Linux distribution
-* Singularity / SingularityCE
-* IPC 2018 planner containers
-* PDDL domain and problem files
+**[Abrir el visualizador en GitHub Pages](https://isaiassolis.github.io/automatic-planning-pddl-rover/visualizer/)**
 
-Install Singularity using:
+## Experimentos con planificadores IPC 2018
+
+Trabajé con **Delfi1** y **Complementary2**, utilizando contenedores **Singularity** para ejecutar problemas de planificación clásicos, incluido el dominio de referencia **Snake**.
+
+### Resultados de Rover
+
+| Escenario | Acciones del plan | Costo | Tiempo registrado |
+| --- | ---: | ---: | ---: |
+| Problema 1 | 14 | 14 | 0.06 s |
+| Problema 2 | 21 | 21 | 0.08 s |
+| Problema 3 | 27 | 27 | 0.0026 s |
+
+Los tres escenarios cuentan con planes válidos. La complejidad del entorno y las restricciones se reflejan en planes de mayor longitud; el tiempo depende también del problema y de las condiciones de ejecución, por lo que no tiene por qué aumentar de manera lineal.
+
+### Comparación de planificadores con Snake
+
+| Métrica | Complementary2 | Delfi1 |
+| --- | ---: | ---: |
+| Costo del plan | 24 | 24 |
+| Longitud del plan | 24 | 24 |
+| Estados evaluados | 267,789 | 87 |
+| Estados generados | 337,799 | 86 |
+| Tiempo de búsqueda | 1.69 s | 0.39 s |
+
+Ambos generaron soluciones de **costo 24**. En esta ejecución, **Delfi1** exploró menos estados y completó la búsqueda en menos tiempo.
+
+## Tecnologías y herramientas
+
+| Área | Tecnología |
+| --- | --- |
+| Modelado simbólico | **PDDL / STRIPS** |
+| Planificadores | **Delfi1 y Complementary2 (IPC 2018)** |
+| Entorno de ejecución | **Linux y Singularity / SingularityCE** |
+| Aplicación interactiva | **HTML, CSS y JavaScript** |
+| Representación gráfica | **SVG** |
+| Publicación de la demostración | **GitHub Pages** |
+
+## Cómo ejecutar los planificadores
+
+Los experimentos se realizaron en un entorno Linux basado en Ubuntu / Pop!_OS, utilizando contenedores Singularity.
+
+Instalación en un entorno compatible:
 
 ```bash
 sudo apt update
 sudo apt install singularity-container -y
-```
-
-Check the installation:
-
-```bash
 singularity --version
 ```
 
----
-
-## Building a Planner Container
-
-From inside the planner directory, build the Singularity image using:
+Para construir la imagen a partir de la receta `Singularity` del planificador:
 
 ```bash
 sudo singularity build planner.img Singularity
 ```
 
-This generates a `planner.img` file containing the required planner environment.
-
----
-
-## Running a Planner
-
-Create a runtime directory and define the domain, problem, and output plan file:
+Ejemplo de ejecución, ajustando las rutas y usando la imagen correspondiente al planificador:
 
 ```bash
 RUNDIR="$(pwd)/rover_problem1"
 DOMAIN="$RUNDIR/domain.pddl"
 PROBLEM="$RUNDIR/problem1.pddl"
 PLANFILE="$RUNDIR/sas_plan"
+
+singularity run -C -H "$RUNDIR" planner.img "$DOMAIN" "$PROBLEM" "$PLANFILE"
 ```
 
-Then execute the planner:
+La disponibilidad del paquete Singularity y de las imágenes IPC 2018 depende de la distribución y el entorno utilizados.
 
-```bash
-singularity run -C -H $RUNDIR planner.img $DOMAIN $PROBLEM $PLANFILE
-```
-
-The generated plan will be saved in the output file defined by `PLANFILE`.
-
----
-
-## Rover Domain
-
-The custom Rover domain models a rover that must transport minerals from different locations to analysis laboratories.
-
-### Predicates
-
-| Predicate   | Description                                       |
-| ----------- | ------------------------------------------------- |
-| `at`        | Current position of the rover                     |
-| `rock-at`   | Location of each mineral                          |
-| `connected` | Valid path between locations                      |
-| `carrying`  | Mineral currently carried by the rover            |
-| `empty`     | Indicates that the rover is not carrying anything |
-| `lab`       | Defines a laboratory location                     |
-| `accepts`   | Defines laboratory-mineral compatibility          |
-| `delivered` | Indicates that a mineral has been delivered       |
-
-### Actions
-
-The domain includes three main actions:
-
-* `move`: moves the rover between connected locations.
-* `pickup`: allows the rover to collect a mineral.
-* `drop`: allows the rover to deliver a mineral to a compatible laboratory.
-
----
-
-## Planning Scenarios
-
-### Scenario 1: Basic Mineral Transportation
-
-![Scenario 1](screenshots/Escenario1.png)
-
-The rover starts at location `L4` and must collect two minerals located at different locations. Both minerals must be delivered to laboratory `L5`.
-
-This scenario introduces:
-
-* basic movement,
-* mineral pickup,
-* mineral delivery,
-* directed and bidirectional paths.
-
-### Scenario 2: Expanded Environment
-
-![Scenario 2](screenshots/Escenario2.png)
-
-The second scenario adds a new mineral and additional locations, increasing the complexity of the search space.
-
-This scenario introduces:
-
-* more minerals,
-* additional routes,
-* longer plans,
-* expanded navigation constraints.
-
-### Scenario 3: Specialized Laboratories
-
-![Scenario 3](screenshots/Escenario3.png)
-
-The third scenario introduces two specialized laboratories. Each laboratory accepts only specific minerals.
-
-This scenario introduces:
-
-* multiple laboratories,
-* mineral-laboratory compatibility,
-* additional locations,
-* more complex delivery constraints.
-
----
-
-## Interactive Rover Visualizer
-
-The repository also includes a web-based interactive visualizer capable of executing rover planning scenarios step-by-step.
-
-### Visualizer Features
-
-- Interactive SVG-based planning visualization
-- Built-in rover planning scenarios
-- Dynamic loading of custom PDDL files
-- PDDL domain parsing
-- PDDL problem parsing
-- Plan parsing and execution
-- Real-time rover animation
-- Action highlighting
-- Symbolic action validation
-- Invalid plan detection
-- Laboratory compatibility checking
-- Automatic execution playback
-- Interactive execution controls
-
-### Visualizer Preview
-
-![Visualizer](screenshots/visualizer.png)
-
-## Web-Based Planning Visualization
-
-A lightweight frontend visualizer was developed using:
-
-- HTML
-- CSS
-- JavaScript
-- SVG rendering
-
-The visualizer dynamically loads planning scenarios and generated plans, allowing interactive exploration of automated planning behavior.
-
-Users can:
-- execute plans manually,
-- autoplay planning sequences,
-- inspect rover states,
-- track delivered minerals,
-- and compare progressively complex planning environments.
-
----
-
-## Symbolic Plan Validation
-
-The system validates symbolic actions before execution by checking:
-
-- rover position consistency,
-- valid graph connectivity,
-- object availability,
-- carrying constraints,
-- laboratory compatibility.
-
-Invalid plans are automatically detected and execution stops with an explanatory validation message.
-
-Example:
+## Estructura principal
 
 ```text
-Invalid move: no connection from L5 to L6
+automatic-planning-pddl-rover/
+├── rover/
+│   ├── domain.pddl
+│   ├── problem1.pddl
+│   ├── problem2.pddl
+│   └── problem3.pddl
+├── snake/
+│   ├── domain.pddl
+│   └── p01.pddl
+├── plans/
+│   ├── problem1_plan.txt
+│   ├── problem2_plan.txt
+│   └── problem3_plan.txt
+├── screenshots/
+└── visualizer/
+    ├── index.html
+    ├── style.css
+    ├── app.js
+    └── data/
 ```
 
----
-## PDDL Parsing Pipeline
+## Mi participación y aprendizajes
 
-The visualizer processes planning information through multiple symbolic reasoning stages:
+En este proyecto trabajé en el **modelado del dominio y los problemas PDDL**, en la ejecución y comparación de planificadores, y en el **desarrollo del visualizador interactivo**.
 
-```text
-domain.pddl
-        ↓
-Domain Parser
-        ↓
-problem.pddl
-        ↓
-Problem Interpreter
-        ↓
-Plan Validator
-        ↓
-Execution Engine
-        ↓
-Interactive SVG Visualizer
-```
+Me permitió combinar la lógica de planificación con el diseño de una interfaz que hace visible el comportamiento del sistema: desde las precondiciones de una acción hasta la verificación de un objetivo.
 
-The current implementation supports symbolic parsing and validation for the Rover planning domain.
+La planificación simbólica resulta útil para estudiar problemas de **robótica, logística, sistemas autónomos y agentes inteligentes**, especialmente cuando las reglas y restricciones deben estar definidas de manera explícita.
+
+## Evolución posible
+
+Me interesa ampliar este trabajo hacia la explicación de acciones, el soporte de otros dominios, la ejecución integrada de planificadores y la generación asistida de modelos PDDL con LLM. Estas líneas forman parte de una posible evolución, no de la versión publicada.
+
+## Licencia
+
+El código publicado se distribuye bajo la [licencia MIT](LICENSE).
 
 ---
 
-## Live Demo
-
-**Live interactive visualizer:**
-
-https://isaiassolis.github.io/automatic-planning-pddl-rover/visualizer/
-
----
-
-## Experimental Results
-
-| Scenario  | Plan Length | Plan Cost | Total Time |
-| --------- | ----------: | --------: | ---------: |
-| Problem 1 |          14 |        14 |      0.06s |
-| Problem 2 |          21 |        21 |      0.08s |
-| Problem 3 |          27 |        27 |    0.0026s |
-
-The results show that increasing the complexity of the environment produces longer plans, as expected in automated planning problems. However, the planner was able to generate valid solutions for all scenarios.
-
----
-
-## Planner Comparison
-
-The Snake benchmark was used to compare two IPC 2018 planners: Delfi1 and Complementary2.
-
-| Metric           | Complementary2 | Delfi1 |
-| ---------------- | -------------: | -----: |
-| Plan cost        |             24 |     24 |
-| Plan length      |             24 |     24 |
-| Evaluated states |        267,789 |     87 |
-| Generated states |        337,799 |     86 |
-| Search time      |          1.69s |  0.39s |
-
-Both planners found optimal solutions. However, Delfi1 showed a more efficient performance in terms of evaluated states and search time.
-
----
-
-## Why This Project Matters
-
-This project demonstrates how symbolic AI can be used to model and solve structured decision-making problems. Unlike purely data-driven machine learning projects, automated planning focuses on explicit representations of actions, states, constraints, and goals.
-
-This makes PDDL-based planning especially relevant for:
-
-* robotics,
-* logistics,
-* autonomous systems,
-* task planning,
-* intelligent agents,
-* hybrid AI systems.
-
----
-
-## Future Work
-
-Planned extensions include:
-
-- explainable action semantics,
-- automatic extraction of preconditions and effects,
-- generic multi-domain support,
-- planner integration,
-- Fast Downward backend execution,
-- support for additional IPC benchmark domains,
-- LLM-to-PDDL generation,
-- hybrid neuro-symbolic planning workflows.
-
----
-
-## License
-
-This project is intended for educational and research purposes.
-
-The source code in this repository is distributed under the [MIT License](LICENSE).
+<p align="center"><strong>Modelar decisiones, generar planes y comprender su ejecución.</strong></p>
+<p align="center"><a href="https://github.com/isaiassolis">Isaías Solís · Portafolio profesional</a></p>
