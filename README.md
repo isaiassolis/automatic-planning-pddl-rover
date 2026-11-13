@@ -321,7 +321,7 @@ The current implementation supports symbolic parsing and validation for the Rove
 
 ---
 
-## 🔗 Live Demo
+## Live Demo
 
 **Live interactive visualizer:**
 
